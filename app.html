@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="robots" content="index, follow">
 <title>Topical Maps Unlocked - Cẩm Nang SEO & Thực Thể Chuyên Sâu</title>
-<meta name="description" content="Hệ thống hóa toàn bộ kiến thức chuyên sâu về Topical Maps, Phân Tầng Thực Thể (Entity), Thuật Toán SERP Similarity và Xây Dựng Cụm Nội Dung Đỉnh Cao.">
 <!-- Telegram WebApp SDK -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <!-- Fonts -->
@@ -33,6 +32,7 @@
   --sidebar-width: 330px;
 }
 
+/* Telegram Theme Sync */
 body.tg-theme {
   --bg-primary: var(--tg-theme-bg-color, #0a0f1d);
   --bg-surface: var(--tg-theme-secondary-bg-color, #111827);
@@ -59,6 +59,7 @@ body {
   flex-direction: column;
 }
 
+/* Header */
 header {
   height: var(--header-height);
   background: rgba(17, 24, 39, 0.9);
@@ -150,6 +151,7 @@ header {
   margin-left: 8px;
 }
 
+/* Layout */
 .app-container {
   display: flex;
   flex: 1;
@@ -157,6 +159,7 @@ header {
   position: relative;
 }
 
+/* Sidebar */
 aside.sidebar {
   width: var(--sidebar-width);
   background: var(--bg-surface);
@@ -258,6 +261,7 @@ aside.sidebar {
   border-radius: 0 4px 4px 0;
 }
 
+/* Main Content Area */
 main.content-area {
   flex: 1;
   overflow-y: auto;
@@ -274,6 +278,7 @@ main.content-area {
   width: 100%;
 }
 
+/* Breadcrumb & Navigation */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -323,6 +328,7 @@ main.content-area {
   color: var(--accent);
 }
 
+/* Article Body Typography */
 .article-body {
   font-size: 15px;
   color: #d1d5db;
@@ -379,6 +385,7 @@ main.content-area {
   background: rgba(255, 255, 255, 0.015);
 }
 
+/* SVG Containers */
 .svg-container, svg {
   max-width: 100% !important;
   height: auto !important;
@@ -390,6 +397,7 @@ main.content-area {
   display: block;
 }
 
+/* Bottom Pagination */
 .pagination {
   margin-top: 60px;
   padding-top: 30px;
@@ -441,6 +449,7 @@ main.content-area {
   margin-left: auto;
 }
 
+/* Mobile & Telegram Optimizations */
 .backdrop {
   display: none;
   position: fixed;
@@ -516,6 +525,7 @@ main.content-area {
 <div class="backdrop" id="backdrop"></div>
 
 <div class="app-container">
+  <!-- Sidebar Menu -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <span>Khóa Học (11 Modules • 41 Bài)</span>
@@ -524,6 +534,7 @@ main.content-area {
     <div id="sidebar-content"></div>
   </aside>
 
+  <!-- Reading Area -->
   <main class="content-area" id="main-content">
     <div class="reading-wrapper">
       <div class="breadcrumb" id="breadcrumb">
@@ -531,7 +542,7 @@ main.content-area {
       </div>
 
       <div class="article-header">
-        <h1 class="article-title" id="lesson-title">Topical Maps Unlocked</h1>
+        <h1 class="article-title" id="lesson-title">Chào mừng sếp đến với Cẩm Nang Topical Maps Unlocked</h1>
         <div class="article-meta">
           <span class="meta-badge" id="module-badge">Module 01</span>
           <span id="read-time">⏱ ~8 phút đọc</span>
@@ -577,6 +588,7 @@ if (window.Telegram && window.Telegram.WebApp) {
 let allLessons = [];
 let currentLessonIdx = 0;
 
+// Flatten lessons for linear navigation
 if (window.COURSE_DATA) {
   window.COURSE_DATA.forEach(m => {
     m.lessons.forEach(l => {
@@ -606,6 +618,7 @@ const nextTitle = document.getElementById('next-title');
 const searchInput = document.getElementById('search-input');
 const progressBadge = document.getElementById('progress-badge');
 
+// Render Sidebar
 function renderSidebar(filter = '') {
   sidebarContent.innerHTML = '';
   const q = filter.trim().toLowerCase();
@@ -646,26 +659,28 @@ function renderSidebar(filter = '') {
   });
 }
 
+// Load Lesson
 function loadLesson(idx) {
   if (idx < 0 || idx >= allLessons.length) return;
   currentLessonIdx = idx;
   const l = allLessons[idx];
   
+  // Haptic feedback in Telegram
   if (tg && tg.HapticFeedback) {
     tg.HapticFeedback.impactOccurred('light');
   }
   
-  // Set unified single title
   lessonTitle.textContent = l.title;
   moduleBadge.textContent = l.moduleTitle.split(':')[0];
   bcCurrent.textContent = l.title;
   lessonCountTag.textContent = `Bài ${idx + 1} / ${allLessons.length}`;
   
-  // Clean injected HTML
+  // Inject HTML Content
   lessonBody.innerHTML = l.html;
   
   document.getElementById('main-content').scrollTop = 0;
   
+  // Update Pagination
   if (idx > 0) {
     btnPrev.style.visibility = 'visible';
     prevTitle.textContent = allLessons[idx - 1].title;
@@ -682,13 +697,18 @@ function loadLesson(idx) {
     btnNext.style.visibility = 'hidden';
   }
   
+  // Progress
   const pct = Math.round(((idx + 1) / allLessons.length) * 100);
   progressBadge.textContent = pct + '%';
   
+  // Save position
   localStorage.setItem('topical_last_idx', idx);
+  
+  // Update sidebar active state
   renderSidebar(searchInput.value);
 }
 
+// Mobile sidebar controls
 function closeMobileSidebar() {
   sidebar.classList.remove('open');
   backdrop.classList.remove('active');
@@ -701,10 +721,12 @@ btnToggle.onclick = () => {
 
 backdrop.onclick = closeMobileSidebar;
 
+// Search
 searchInput.oninput = (e) => {
   renderSidebar(e.target.value);
 };
 
+// Initial load
 renderSidebar();
 const savedIdx = parseInt(localStorage.getItem('topical_last_idx') || '0', 10);
 loadLesson(isNaN(savedIdx) ? 0 : savedIdx);
